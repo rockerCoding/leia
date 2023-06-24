@@ -27,18 +27,14 @@ const ProfileAutor = ({ selected }) => {
     setIsLoading(true)
     let obj = { nome: nome }
 
-    setTimeout(() => {
-      setHasBeenSaved({sucess: "bla"})
-    }, 3000);
+    AutorController.novoAutor(obj).then((res) => {
+      console.log('respondeu: ' + res)
+      setHasBeenSaved(res)
 
+      /* setTimeout(() => {
+      }, 2000); */
 
-    /* AutorController.novoAutor(obj).then((res) => {
-
-      setTimeout(() => {
-        setHasBeenSaved(res)
-      }, 2000);
-
-    }) */
+    })
   }
 
   const handleEdit = () => setIsDisabled(!isDisabled)
@@ -69,7 +65,9 @@ const ProfileAutor = ({ selected }) => {
   }
 
   const handleReset = () => {
+    setIsLoading(false)
     setNome("")
+    setHasBeenSaved(null)
   }
 
   useEffect(() => {
@@ -160,10 +158,11 @@ const ProfileAutor = ({ selected }) => {
               setIsVisible={setIsLoading}
               haveResponse={hasBeenSaved}
               type="loadingWithRespond"
+              durationAfterResponse={3000}
               responses={{
-                sucess: {
-                  text: nome + " incluso com sucesso!",
-                  //component: <Text>Exclusão de <Text style={{ fontWeight: '700' }}>{selected.nome}</Text> realizada com sucesso</Text>
+                success: {
+                  //text: nome + " incluso com sucesso!",
+                  component: <Text>Inclusão de <Text style={{ fontWeight: '700' }}>{nome}</Text> realizada com sucesso</Text>
                 },
                 onFinish: () => handleReset()
               }}

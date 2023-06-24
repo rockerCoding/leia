@@ -10,7 +10,7 @@ const ICONSIZE = 50
 const ModalCustom = ({
   type, isVisible, setIsVisible,
   backdropQuit, question,
-  haveResponse, setHaveResponse, responses,
+  haveResponse, setHaveResponse, responses, durationAfterResponse,
   loadingMessage, loadingComponent
 }) => {
 
@@ -26,7 +26,6 @@ const ModalCustom = ({
   }
 
   const ButtonQuestion = ({ button, quitOnClick }) => {
-    console.log(button)
     return (
       <TouchableOpacity onPress={() => handleOnPressQuestionButton(button.respond, quitOnClick)}
         style={[styles.buttonContainer, { backgroundColor: button.color }]}
@@ -56,29 +55,20 @@ const ModalCustom = ({
     )
   }
 
-  /* const ReturnResponse = ({haveResponse}) => {
-      handleTimeout()
-      return (
-        haveResponse == true?
-        <View style={styles.responseContainer}>
-          <Text>Deu bom</Text>
-        </View>
-        :
-        <View>
-          <Text>Deu ruim</Text>
-        </View>
-      )
-  } */
-
   const ReturnWithResponse = () => {
 
     console.log(haveResponse)
+    console.log()
     return (
       haveResponse == null ?
         <ActivityIndicator size={ICONSIZE * 2} /> :
-        haveResponse.sucess ?
+        haveResponse == true ?
           <View style={{ flex: 1 }}>
-            <Text>Bom</Text>
+            {
+              responses.success.component ?
+              responses.success.component :
+              <Text>{haveResponse.success}</Text>
+            }
           </View> :
           <View style={{ flex: 1 }}>
             <Text>Ruim</Text>
@@ -87,12 +77,18 @@ const ModalCustom = ({
   }
 
   useEffect(() => {
-    handleTimeout()
+    if(haveResponse) handleTimeout()
+    
   }, [haveResponse])
 
 
   const handleTimeout = () => {
-    console.log(responses)
+    
+    setTimeout(() => {
+      /* console.log('fechar')
+      console.log(responses) */
+      if(responses.onFinish) responses.onFinish()
+    }, durationAfterResponse ? durationAfterResponse : 1500);
     //if(responses.onFinish) responses.onFinish()
     /* setTimeout(() => {
       if(haveResponse != null) {
