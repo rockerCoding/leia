@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
 
   //footer
   footerContainer: {
-    flex: 1.2,
+    flex: 2,
     backgroundColor: 'rgba(8, 11, 66, 0.8)',
     padding: 30
   },

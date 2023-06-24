@@ -22,24 +22,17 @@ const ProfileAutor = ({ selected }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   const [goBack, setGoBack] = useState(false)
-
-  const handleSave = () => {
-    setIsLoading(true)
-    let obj = { nome: nome }
-
-    AutorController.novoAutor(obj).then((res) => {
-      console.log('respondeu: ' + res)
-      setHasBeenSaved(res)
-
-      /* setTimeout(() => {
-      }, 2000); */
-
-    })
-  }
-
+  
   const handleEdit = () => setIsDisabled(!isDisabled)
   const handleLoading = () => { setIsLoading(!isLoading) }
   const handleQuestion = () => setShowConfirmDelete(true)
+  
+  const handleSave = () => {
+    handleLoading()
+    AutorController.novoAutor({ nome: nome }).then((res) => {
+      setHasBeenSaved(res)
+    })
+  }
 
   const handleSaveExist = () => {
     console.log("gravar novas informações")
@@ -146,7 +139,7 @@ const ProfileAutor = ({ selected }) => {
                 haveResponse={hasBeenDeleted}
                 type="loadingWithRespond"
                 responses={{
-                  sucess: {
+                  success: {
                     text: "Exclusão de " + selected.nome + " realizada com sucesso",
                     component: <Text>Exclusão de <Text style={{ fontWeight: '700' }}>{selected.nome}</Text> realizada com sucesso</Text>
                   }

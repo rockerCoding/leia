@@ -58,7 +58,7 @@ const ModalCustom = ({
   const ReturnWithResponse = () => {
 
     console.log(haveResponse)
-    console.log()
+    console.log(responses )
     return (
       haveResponse == null ?
         <ActivityIndicator size={ICONSIZE * 2} /> :
@@ -78,26 +78,13 @@ const ModalCustom = ({
 
   useEffect(() => {
     if(haveResponse) handleTimeout()
-    
   }, [haveResponse])
 
 
   const handleTimeout = () => {
-    
     setTimeout(() => {
-      /* console.log('fechar')
-      console.log(responses) */
       if(responses.onFinish) responses.onFinish()
     }, durationAfterResponse ? durationAfterResponse : 1500);
-    //if(responses.onFinish) responses.onFinish()
-    /* setTimeout(() => {
-      if(haveResponse != null) {
-        setIsVisible(false)
-        setHaveResponse(null)
-      }
-
-      if(responses.onFinish) responses.onFinish()
-    }, 2500); */
   }
 
   const ReturnedTypeModal = ({ type, responses, setIsVisible, haveResponse }) => {

@@ -47,7 +47,7 @@ const GerenciarAutores = ({ selected, setSelected }) => {
             selectable: true,
             borderColor: "green",
             listColor: "white",
-            title: "Lista de Autores",
+            title: "Autores",
             titleColor: "green",
             titleTextColor: "white",
             headerColor: "blue",

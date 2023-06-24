@@ -63,7 +63,7 @@ const GerenciarLivros = ({selected, setSelected}) => {
             borderColor: "blue",
             listColor: "white",
             title: "Lista de Livros",
-            titleColor: "blue",
+            titleColor: "#436ed4",
             titleTextColor: "white",
             headerColor: "blue",
             headerTextColor: "white",
