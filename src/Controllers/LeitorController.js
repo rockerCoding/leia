@@ -4,12 +4,13 @@ export default class LeitorController {
 
   constructor(){}
 
-  static baseUrl = "http://localhost:3000"
+  static baseUrl = "http://localhost:3000/obra"
 
   static getBuscarTodos = async () => {
     let res;
     try {
-      res = await axios.get(this.baseUrl + "/leitor/obterTodos").then((res) => {
+      res = await axios.get(this.baseUrl + "/obterTodos").then((res) => {
+        console.log(res)
         return res.data
       })  
     } catch (error) {
@@ -18,7 +19,7 @@ export default class LeitorController {
     return res 
   }
 
-  static novoLivro = async (livro) => {
+  /* static novoLivro = async (livro) => {
     let res;
     console.log(livro)
     try {
@@ -29,7 +30,7 @@ export default class LeitorController {
       
     }
     return res
-  }
+  } */
 
 
 }

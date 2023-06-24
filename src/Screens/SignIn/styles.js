@@ -44,6 +44,13 @@ export const styles = StyleSheet.create({
   warningText: {
     color: "white",
     textTransform: 'uppercase'
+  },
+  isLoggingTitleText: {
+    fontWeight: '600',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    textAlignVertical: 'center'
   }
 
 })

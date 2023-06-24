@@ -2,42 +2,51 @@ import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { styles } from './styles'
 import { ActivityIndicator, Snackbar, TextInput } from 'react-native-paper'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, EvilIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../Contexts/AuthContext';
+import UserController from '../../Controllers/UserController';
+import ModalCustom from '../../Components/ModalCustom';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
-const SignIn = () => {
 
-  const {isLoading, setIsLoading, setUser} = useContext(AuthContext)
+const SignIn = ({ navigationLogin }) => {
 
-  const navigation = useNavigation()
+  const { isLoading, setIsLoading, setUser } = useContext(AuthContext)
 
-  const [login, setLogin] = useState("grocha")
-  const [senha, setSenha] = useState("123456")
+  const [login, setLogin] = useState("eric@gmail.com")
+  const [senha, setSenha] = useState("senha")
   const [isSecret, setIsSecret] = useState(true)
   const [isEnabled, setIsEnabled] = useState(false)
   const [error, setError] = useState(false)
-  /* const [isLoading, setIsLoading] = useState(false) */
   const [isDisable, setIsDisable] = useState(false)
+  const [isLogging, setIsLogging] = useState(false)
 
   const handleError = () => setError(!error)
-
-  const handleDisableField = () => {
-    setIsLoading(!isLoading)
+  const handleResetPage = () => {
+    setLogin("")
+    setSenha("")
+    setIsDisable(false)
+    setIsLoading(false)
   }
 
-  const checkLogin = (login, senha) => {
-    let user = "grocha"
-    let pass = "123456"
-    
-    setTimeout(() => {
-      if(login == user && senha == pass){
-        setUser(true)
-      } else {
-        setError(true)
+  const checkLogin = () => {
+    let attempt = {
+      email: login,
+      senha: senha
+    }
+
+    UserController.login(attempt).then((res) => {
+      //handleResetPage()
+      if (res) {
+        setIsLogging(true)
+        setTimeout(() => {
+          setUser({ data: res.data, navigation: navigationLogin })
+        }, 3000);
       }
-      setIsLoading(false)
-    }, 3000);
+      else setError(true)
+    }).finally(() => setIsLoading(false))
+
   }
 
   const handleLogin = () => {
@@ -48,7 +57,6 @@ const SignIn = () => {
 
   return (
     <View style={styles.container}>
-{/* logoLeia.jpg */}
       <View style={styles.topContainer}>
         <Image
           source={require('../../../assets/images/logoLeia.jpg')}
@@ -96,8 +104,8 @@ const SignIn = () => {
           right={<TextInput.Icon icon="eye" onPress={() => setIsSecret(!isSecret)} />}
         />
 
-        <TouchableOpacity 
-          style={[styles.buttonContainer, {backgroundColor: isLoading ? "lightblue" : "#5290f2"}]} onPress={() => handleLogin()}
+        <TouchableOpacity
+          style={[styles.buttonContainer, { backgroundColor: isLoading ? "lightblue" : "#5290f2" }]} onPress={() => handleLogin()}
           disabled={isLoading}
         >
           <Ionicons name="ios-checkmark" size={24} color="white" />
@@ -106,6 +114,35 @@ const SignIn = () => {
 
 
       </View>
+      <ModalCustom
+        isVisible={isLogging}
+        type="loading"
+        loadingComponent={
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+            <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={styles.isLoggingTitleText}>Usuário Encontrado!</Text>
+              <EvilIcons name="check" size={44} color="green" />
+            </View>
+            <CountdownCircleTimer
+              isPlaying
+              duration={3}
+              /* colors={['#004777', '#F7B801', '#A30000', '#A30000']} */
+              colors={['lightgreen']}
+              colorsTime={[0]}
+              strokeWidth={5}
+            >
+              {({ remainingTime }) => (
+                <>
+                  <Text> Entrando em: </Text>
+                  <Text> {remainingTime}</Text>
+
+                </>
+              )}
+            </CountdownCircleTimer>
+          </View>
+
+        }
+      />
 
     </View>
   )

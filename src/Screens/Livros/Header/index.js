@@ -28,7 +28,7 @@ const Header = (props) => {
     switch (name) {
       case "Lista":
         return (
-          <TouchableOpacity onPress={() => props.navigation.navigate("Livro")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Novo Livro")}>
             <MaterialCommunityIcons name="book-plus-outline" size={24} color="black" />
           </TouchableOpacity>
         )

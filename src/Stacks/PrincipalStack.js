@@ -9,23 +9,12 @@ import AppStack from './AppStack';
 
 const Stack = createStackNavigator();
 
-
-
-
 const PrincipalStack = () => {
 
   const { user } = useContext(AuthContext)
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        {
-          !user ?
-            <Stack.Screen name="Home" component={AppStack} /> :
-            <Stack.Screen name="SignIn" component={SignIn} />
-        }
-      </Stack.Navigator>
-    </NavigationContainer>
+    !user ? <AppStack /> : <SignIn />
   )
 }
 

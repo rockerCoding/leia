@@ -6,13 +6,14 @@ import { styles } from './styles';
 import { TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import AutorController from '../../../Controllers/AutorController';
+import ModalCustom from '../../../Components/ModalCustom';
+import ObraController from '../../../Controllers/ObraController';
 
 const Profile = ({ selected }) => {
 
-  console.log(selected)
-
   const [nome, setNome] = useState(selected ? selected.nome : "")
   const [autor, setAutor] = useState(selected ? selected.autor.nome : "")
+  const [isLoading, setIsLoading] = useState(false)
 
   const [autores, setAutores] = useState(null)
   const [hasBeenSaved, setHasBeenSaved] = useState(null)
@@ -24,26 +25,35 @@ const Profile = ({ selected }) => {
 
 
   const handleSave = () => {
+    setIsLoading(true)
     let obj = {
-      nome: nome,
+      titulo: nome,
       autor: autor
     }
-    LeitorController.novoLivro(obj).then((res) => {
+    ObraController.novaObra(obj).then((res) => {
       setHasBeenSaved(res)
-    })
+    }).catch((erro) => console.log(erro))
+    
   }
 
-  const handleEdit = () => {
-    setIsDisabled(!isDisabled)
+  const handleEdit = () => setIsDisabled(!isDisabled)
+  const handleChangeAuthor = (itemValue) => setAutor(itemValue)
+
+  const validadeSaveBook = () => {
+    if (autor == "" || nome == "") console.log("não salva")
+    else handleSave()
+  }
+  const handleReset = () => {
+    console.log('resetar')
   }
 
-  const handleChangeAuthor = (itemValue) => {
-    setAutor(itemValue)
-  }
+  useEffect(() => {
+    console.log(hasBeenSaved)
+  }, [hasBeenSaved])
+  
 
   return (
     <View style={styles.container}>
-
       <View style={styles.topContainer}>
 
       </View>
@@ -91,7 +101,6 @@ const Profile = ({ selected }) => {
           mode='outlined'
           label="Nome"
         />
-
       </View>
       <View style={styles.bottomContainer}>
         {
@@ -105,17 +114,26 @@ const Profile = ({ selected }) => {
                     <Button onPress={() => handleEdit()} title='Cancelar' color="lightgreen" />
                     <Button onPress={() => handleEdit()} title='Gravar' color="blue" />
                   </>
-
               }
-
             </View>
             :
-            <Button onPress={() => handleSave()} title='Salvar novo livro' />
+            <Button onPress={() => validadeSaveBook()} title='Salvar novo livro' />
         }
-
       </View>
 
-
+      <ModalCustom
+        isVisible={isLoading}
+        setIsVisible={setIsLoading}
+        haveResponse={hasBeenSaved}
+        type="loadingWithRespond"
+        responses={{
+          sucess: {
+            text: nome + " incluso com sucesso!",
+          },
+          onFinish: () => handleReset()
+        }}
+        
+      />
     </View>
   )
 }

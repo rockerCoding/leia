@@ -6,7 +6,13 @@ const AuthProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(null)
   const [userToken, setUserToken] = useState("a")
+  const [navigateLogin, setNavigateLogin] = useState(null)
   const [user, setUser] = useState(null)
+
+ /*  useEffect(() => {
+    console.log(user)
+  }, [user]) */
+  
 
   /* const login = async (user) => {
     setIsLoading(true);
@@ -40,28 +46,13 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
     }
 
-  }
-
-
-
-
-  useEffect(() => {
-    isLoggedIn();
-    
-  }, []) */
-
-  
-
-  useEffect(() => {
-  
-  }, [user])
-  
+  } */
 
 
   return (
     <AuthContext.Provider
       value={{
-        user, setUser, isLoading, setIsLoading
+        user, setUser, isLoading, setIsLoading, navigateLogin, setNavigateLogin
       }}
     >
       {children}

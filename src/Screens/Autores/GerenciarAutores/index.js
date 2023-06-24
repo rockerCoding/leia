@@ -2,34 +2,27 @@ import { View, Text, TouchableOpacity, FlatList, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import Tabela from '../../../Components/Tabela'
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useNavigation, useIsFocused, DrawerActions } from '@react-navigation/native';
 import AutorController from '../../../Controllers/AutorController';
 
 const GerenciarAutores = ({ selected, setSelected }) => {
 
-  const navigation = useNavigation()
-  const focused = useIsFocused()
-
+  const navigation            = useNavigation()
+  const focused               = useIsFocused()
   const [autores, setAutores] = useState(null)
 
-  useEffect(() => {
-    console.log(autores)
-  }, [autores])
+  const fetchAutores = () => {
+    setAutores(null)
+    AutorController.getBuscarTodos(setAutores).then(res => setAutores(res))
+  }
 
-
   useEffect(() => {
-    if (focused) {
-      AutorController.getBuscarTodos().then(res => setAutores(res))
-    }
+    if (focused) fetchAutores()
   }, [focused])
 
   useEffect(() => {
     if (selected) navigation.navigate("Autor")
   }, [selected])
-
-  function handleRefresh(){
-    console.log('refresh data')
-  }
 
   return (
     <View style={styles.container}>
@@ -62,7 +55,7 @@ const GerenciarAutores = ({ selected, setSelected }) => {
             borderRadius: 5,
             zebra: ["white", "lightgreen"],
             hasRefresh: true,
-            refreshButton: () => handleRefresh()
+            refreshButton: () => fetchAutores()
           }}
           setSelected={setSelected}
 

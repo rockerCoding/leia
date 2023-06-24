@@ -16,16 +16,22 @@ export default class AutorController {
 
   static novoAutor = async (livro) => {
     let res;
-    console.log(livro)
     try {
       res = await axios.post(this.baseUrl + "/cadastrar", livro).then((res) => {
-        console.log(res)
-        return res
+        return true
       })
     } catch (error) {
-
+      return false
     }
     return res
+  }
+
+  static deletarAutor = async (autor) => {
+    return await axios.delete(this.baseUrl + "/deletar", {data: autor}).then((res) => {
+      return true
+    }).catch(erro => {
+      return false
+    })
   }
 
 

@@ -46,7 +46,7 @@ const GerenciarLivros = ({selected, setSelected}) => {
               type: "numeric"
             },
             {
-              name: "nome",
+              name: "titulo",
               size: "40%",
               type: "text"
             },

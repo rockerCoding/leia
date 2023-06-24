@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
 
 
 const Header = (props) => {

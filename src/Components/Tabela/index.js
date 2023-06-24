@@ -127,13 +127,13 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
   })
 
   const Title = ({hasRefresh, refreshButton}) => {
-    console.log(refreshButton)
+
     return (
       <View style={innerStyles.titleContainer}>
         <Text style={innerStyles.titleText}>{title}</Text>
         {
-          hasRefresh && 
-          <Pressable style={innerStyles.titleRefreshButtonContainer} onPress={refreshButton}>
+          configTable.hasRefresh && 
+          <Pressable style={innerStyles.titleRefreshButtonContainer} onPress={() => configTable.refreshButton()}>
             <Ionicons name="ios-refresh" size={24} color="white" />
           </Pressable>
         }
@@ -148,7 +148,7 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
   return (
     <TabelaProvider>
       <View style={innerStyles.container}>
-        {title && <Title hasRefresh={configTable.hasRefresh} refresh={configTable.refreshButton}/>}
+        {title && <Title />}
 
         <ScrollView
           horizontal
