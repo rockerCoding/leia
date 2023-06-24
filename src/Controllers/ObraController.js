@@ -10,8 +10,6 @@ export default class ObraController {
     let res;
     try {
       res = await axios.get(this.baseUrl + "/obterTodos").then((res) => {
-        console.log(res)
-        retu
         return res.data
       })  
     } catch (error) {
@@ -21,21 +19,23 @@ export default class ObraController {
   }
 
   static novaObra = async (livro) => {
-
-    //return await axios.post(this.baseUrl + "/cadastrar", livro).then(res => res.status == 200)
-
-    
-
-
+    let res = false
     try {
-      await axios.post(this.baseUrl + "/cadastrar", livro).then((res) => {
-        //console.log(res.status == 200 ? true : false)
-        return res.status == 200 ? true : false
+      res = await axios.post(this.baseUrl + "/cadastrar", livro).then((res) => {
+        return res.status === 200 ? true : false 
       })
     } catch (error) {
-      return ("Erro em")      
+      return ("Erro em cadastrar nova obra")      
     }
+    return res
   }
 
+  static deletarObra = async (obra) => {
+    return await axios.delete(this.baseUrl + "/deletar", {data: obra}).then((res) => {
+      return true
+    }).catch(erro => {
+      return false
+    })
+  }
 
 }

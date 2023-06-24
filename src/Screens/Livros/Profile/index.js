@@ -11,46 +11,88 @@ import ObraController from '../../../Controllers/ObraController';
 
 const Profile = ({ selected }) => {
 
-  const [nome, setNome] = useState(selected ? selected.nome : "")
+  const navigation = useNavigation()
+
   const [autor, setAutor] = useState(selected ? selected.autor.nome : "")
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [titulo, setTitulo] = useState(selected ? selected.titulo : "")
   const [autores, setAutores] = useState(null)
-  const [hasBeenSaved, setHasBeenSaved] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(selected ? true : false)
+  const [hasBeenSaved, setHasBeenSaved] = useState(null)
+  const [hasBeenDeleted, setHasBeenDeleted]       = useState(null)
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+  const [goBack, setGoBack]                       = useState(false)
 
-  useEffect(() => {
-    AutorController.getBuscarTodos().then(res => setAutores(res))
-  }, [])
-
+  const handleLoading = () => setIsLoading(!isLoading)
+  const handleEdit = () => setIsDisabled(!isDisabled)
+  const handleChangeAuthor = (itemValue) => setAutor(itemValue)
+  const handleQuestion = () => setShowConfirmDelete(true)
 
   const handleSave = () => {
-    setIsLoading(true)
+    handleLoading()
     let obj = {
-      titulo: nome,
+      titulo: titulo,
       autor: autor
     }
     ObraController.novaObra(obj).then((res) => {
       setHasBeenSaved(res)
     }).catch((erro) => console.log(erro))
-    
-  }
 
-  const handleEdit = () => setIsDisabled(!isDisabled)
-  const handleChangeAuthor = (itemValue) => setAutor(itemValue)
+  }
 
   const validadeSaveBook = () => {
-    if (autor == "" || nome == "") console.log("não salva")
+    if (autor == "" || titulo == "") console.log("não salva")
     else handleSave()
   }
+
   const handleReset = () => {
-    console.log('resetar')
+    handleLoading()
+    setTitulo("")
+    setAutor("")
+    setHasBeenSaved(null)
+  }
+
+  const handleSelection = (choosed) => {
+    let obj = { id: selected.id }
+    if (choosed) {
+      setIsLoading(true)
+      setTimeout(() => {
+        ObraController.deletarObra(obj).then((res) => {
+          setHasBeenDeleted(res)
+          setTimeout(() => {
+            setGoBack(true)
+          }, 2000);
+        })
+        /* AutorController.deletarAutor(obj).then((res) => {
+          setHasBeenDeleted(res)
+          setTimeout(() => {
+            setGoBack(true)
+          }, 2000);
+        }) */
+      }, 2000);
+    }
+    else console.log('cancelar')
   }
 
   useEffect(() => {
-    console.log(hasBeenSaved)
-  }, [hasBeenSaved])
-  
+    AutorController.getBuscarTodos().then(res => setAutores(res))
+  }, [])
+
+  useEffect(() => {
+    console.log(autor)
+  }, [autor])
+
+  useEffect(() => {
+    if (goBack) navigation.goBack()
+  }, [goBack])
+
+
+  useEffect(() => {
+    if (autores) {
+      console.log(selected)
+      console.log(autores)
+    }
+  }, [autores])
 
   return (
     <View style={styles.container}>
@@ -67,15 +109,12 @@ const Profile = ({ selected }) => {
           {
             selected ?
               isDisabled ?
-                <Picker.Item label={selected.autor.nome} value={selected.autor.id} /> :
+                <Picker.Item label={selected.autor.nome} value={selected.autor.id} />
+                :
                 <>
                   <Picker.Item label="Escolha um autor" value="" />
                   {
-                    autores.map((item, index) => {
-                      return (
-                        <Picker.Item label={item.nome} value={item.id} key={"autor" + index} />
-                      )
-                    })
+                    autores.map((item, index) => { return (<Picker.Item label={item.nome} value={item.id} key={"autor" + index} />) })
                   }
                 </>
               :
@@ -83,23 +122,18 @@ const Profile = ({ selected }) => {
               <>
                 <Picker.Item label="Escolha um autor" value="" />
                 {
-                  autores.map((item, index) => {
-                    return (
-                      <Picker.Item label={item.nome} value={item.id} key={"autor" + index} />
-                    )
-                  })
+                  autores.map((item, index) => { return (<Picker.Item label={item.nome} value={item.id} key={"autor" + index} />) })
                 }
-
               </>
           }
         </Picker>
 
         <TextInput
-          value={nome}
-          onChangeText={setNome}
+          value={titulo}
+          onChangeText={setTitulo}
           disabled={isDisabled}
           mode='outlined'
-          label="Nome"
+          label="Título"
         />
       </View>
       <View style={styles.bottomContainer}>
@@ -108,7 +142,10 @@ const Profile = ({ selected }) => {
             <View style={styles.buttonContainer}>
               {
                 isDisabled ?
-                  <Button onPress={() => handleEdit()} title='Editar' color="green" />
+                  <>
+                    <Button onPress={() => handleQuestion()} title='Apagar' color="red" />
+                    <Button onPress={() => handleEdit()} title='Editar' color="green" />
+                  </>
                   :
                   <>
                     <Button onPress={() => handleEdit()} title='Cancelar' color="lightgreen" />
@@ -121,19 +158,47 @@ const Profile = ({ selected }) => {
         }
       </View>
 
-      <ModalCustom
-        isVisible={isLoading}
-        setIsVisible={setIsLoading}
-        haveResponse={hasBeenSaved}
-        type="loadingWithRespond"
-        responses={{
-          sucess: {
-            text: nome + " incluso com sucesso!",
-          },
-          onFinish: () => handleReset()
-        }}
-        
-      />
+      {
+        selected ?
+          <ModalCustom
+            isVisible={showConfirmDelete}
+            setIsVisible={setShowConfirmDelete}
+            backdropQuit={true}
+            type="question"
+            question={{
+              title: "Deseja confirmar a exclusão de " + selected.titulo + "?",
+              handleFunction: (selection) => handleSelection(selection),
+              quitOnClick: true,
+              buttons: [
+                {
+                  name: "Confirmar",
+                  respond: true,
+                  color: "green"
+                },
+                {
+                  name: "Cancelar",
+                  respond: false,
+                  color: "red"
+                }
+              ]
+            }}
+          />
+          :
+          <ModalCustom
+            isVisible={isLoading}
+            setIsVisible={setIsLoading}
+            haveResponse={hasBeenSaved}
+            type="loadingWithRespond"
+            responses={{
+              success: {
+                component: <Text>Obra <Text style={{ fontWeight: '700' }}>{titulo}</Text> inclusa com sucesso!</Text>
+              },
+              onFinish: () => handleReset()
+            }}
+
+          />
+      }
+
     </View>
   )
 }

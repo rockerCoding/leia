@@ -14,14 +14,14 @@ const ProfileAutor = ({ selected }) => {
 
   const navigation = useNavigation()
 
-  const [modalIsVisible, setModalIsVisible] = useState(false)
-  const [nome, setNome] = useState(selected ? selected.nome : "")
-  const [hasBeenSaved, setHasBeenSaved] = useState(null)
-  const [hasBeenDeleted, setHasBeenDeleted] = useState(null)
-  const [isDisabled, setIsDisabled] = useState(selected ? true : false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [modalIsVisible, setModalIsVisible]       = useState(false)
+  const [nome, setNome]                           = useState(selected ? selected.nome : "")
+  const [hasBeenSaved, setHasBeenSaved]           = useState(null)
+  const [hasBeenDeleted, setHasBeenDeleted]       = useState(null)
+  const [isDisabled, setIsDisabled]               = useState(selected ? true : false)
+  const [isLoading, setIsLoading]                 = useState(false)
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-  const [goBack, setGoBack] = useState(false)
+  const [goBack, setGoBack]                       = useState(false)
   
   const handleEdit = () => setIsDisabled(!isDisabled)
   const handleLoading = () => { setIsLoading(!isLoading) }
@@ -34,12 +34,6 @@ const ProfileAutor = ({ selected }) => {
     })
   }
 
-  const handleSaveExist = () => {
-    console.log("gravar novas informações")
-  }
-
-
-
   const handleSelection = (choosed) => {
     let obj = { id: selected.id }
     if (choosed) {
@@ -49,7 +43,6 @@ const ProfileAutor = ({ selected }) => {
           setHasBeenDeleted(res)
           setTimeout(() => {
             setGoBack(true)
-
           }, 2000);
         })
       }, 2000);
@@ -58,9 +51,9 @@ const ProfileAutor = ({ selected }) => {
   }
 
   const handleReset = () => {
-    setIsLoading(false)
     setNome("")
     setHasBeenSaved(null)
+    setIsLoading(false)
   }
 
   useEffect(() => {

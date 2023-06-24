@@ -10,7 +10,6 @@ export default class LeitorController {
     let res;
     try {
       res = await axios.get(this.baseUrl + "/obterTodos").then((res) => {
-        console.log(res)
         return res.data
       })  
     } catch (error) {

@@ -57,8 +57,6 @@ const ModalCustom = ({
 
   const ReturnWithResponse = () => {
 
-    console.log(haveResponse)
-    console.log(responses )
     return (
       haveResponse == null ?
         <ActivityIndicator size={ICONSIZE * 2} /> :

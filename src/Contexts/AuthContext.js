@@ -9,46 +9,7 @@ const AuthProvider = ({ children }) => {
   const [navigateLogin, setNavigateLogin] = useState(null)
   const [user, setUser] = useState(null)
 
- /*  useEffect(() => {
-    console.log(user)
-  }, [user]) */
-  
-
-  /* const login = async (user) => {
-    setIsLoading(true);
-
-    await api.post(routes.login, user).then((response) => {
-
-      setUser(response.data)
-
-      setTimeout(() => {
-        if(!response.data.message) setUserToken("aaa")
-        setIsLoading(false)
-      }, 3000);
-
-    });
-
-  }
-
-  const logout = () => {
-    setIsLoading(true);
-    setUserToken(null)
-    AsyncStorage.removeItem('userToken');
-    setIsLoading(false)
-  }
-
-  const isLoggedIn = async () => {
-    try {
-      setIsLoading(true)
-      let token = await AsyncStorage.getItem('userToken');
-      setUserToken(token)
-      setIsLoading(false)
-    } catch (error) {
-    }
-
-  } */
-
-
+ 
   return (
     <AuthContext.Provider
       value={{
