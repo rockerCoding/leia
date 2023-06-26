@@ -24,6 +24,6 @@ export const styles = StyleSheet.create({
   textCellHeader: {
     textTransform: "uppercase",
     letterSpacing: 2,
-    fontWeight: '700'
+    fontWeight: '100'
   }
 })

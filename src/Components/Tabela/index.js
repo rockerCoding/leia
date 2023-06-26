@@ -163,7 +163,7 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
                   data={data}
                   style={innerStyles.flatlistContainer}
                   stickyHeaderIndices={[0]}
-                  ListHeaderComponent={<Header configs={configs} />}
+                  ListHeaderComponent={<Header configs={configs} configTable={configTable}/>}
                   ListEmptyComponent={<EmptyComponent configs={configs} message={configTable?.emptyDataInformation ? configTable.emptyDataInformation : "Não há dados para serem exibidos"} />}
                   renderItem={({ item, index }) =>
                     <TouchableOpacity onPress={() => handleSelected(item)}

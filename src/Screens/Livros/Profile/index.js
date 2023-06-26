@@ -15,13 +15,13 @@ const Profile = ({ selected }) => {
 
   const [autor, setAutor] = useState(selected ? selected.autor.nome : "")
   const [titulo, setTitulo] = useState(selected ? selected.titulo : "")
+  const [goBack, setGoBack] = useState(false)
   const [autores, setAutores] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(selected ? true : false)
   const [hasBeenSaved, setHasBeenSaved] = useState(null)
-  const [hasBeenDeleted, setHasBeenDeleted]       = useState(null)
+  const [hasBeenDeleted, setHasBeenDeleted] = useState(null)
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-  const [goBack, setGoBack]                       = useState(false)
 
   const handleLoading = () => setIsLoading(!isLoading)
   const handleEdit = () => setIsDisabled(!isDisabled)
@@ -63,12 +63,6 @@ const Profile = ({ selected }) => {
             setGoBack(true)
           }, 2000);
         })
-        /* AutorController.deletarAutor(obj).then((res) => {
-          setHasBeenDeleted(res)
-          setTimeout(() => {
-            setGoBack(true)
-          }, 2000);
-        }) */
       }, 2000);
     }
     else console.log('cancelar')
@@ -85,14 +79,6 @@ const Profile = ({ selected }) => {
   useEffect(() => {
     if (goBack) navigation.goBack()
   }, [goBack])
-
-
-  useEffect(() => {
-    if (autores) {
-      console.log(selected)
-      console.log(autores)
-    }
-  }, [autores])
 
   return (
     <View style={styles.container}>
@@ -189,6 +175,7 @@ const Profile = ({ selected }) => {
             setIsVisible={setIsLoading}
             haveResponse={hasBeenSaved}
             type="loadingWithRespond"
+            durationAfterResponse={3000}
             responses={{
               success: {
                 component: <Text>Obra <Text style={{ fontWeight: '700' }}>{titulo}</Text> inclusa com sucesso!</Text>

@@ -54,19 +54,42 @@ export const styles = StyleSheet.create({
 
   //footer
   footerContainer: {
-    flex: 2,
+    flex: 1,
     backgroundColor: 'rgba(8, 11, 66, 0.8)',
     padding: 30
   },
   leiaMaisContainer: {
     flex: 1,
     borderRadius: 5,
-    justifyContent: 'center', alignItems: 'center',
-    backgroundColor: 'white',
+    padding: 10,
   },
   ltdaText: {
     marginTop: 5,
     color: 'white',
     textAlign: 'right'
+  },
+  contactsContainer: {
+    flex: 1, 
+  },
+  titleContactsContainer: {
+    width: "100%",
+    flexDirection: 'row',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 0.5,
+    borderStyle: 'solid',
+    marginBottom: 10
+    
+  },
+  contactsTitleText: {
+    //width: '100%',
+    //textAlign: 'center',
+    flex: 1,
+    fontSize: 20, color: 'whitesmoke',
+    fontWeight: '100'
+  },
+  copyright: {
+    marginTop: 50,
+    color: 'whitesmoke',
+    textAlign: 'center'
   }
 })

@@ -53,20 +53,19 @@ const CustonDrawer = (props) => {
         </View>
         <View style={styles.footerContainer}>
           <View style={styles.leiaMaisContainer}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                style={{ width: 50, height: 50 }}
-                source={require('../../../assets/images/logoLeia.jpg')}
-
-              />
-              <View>
-                <Text>Leia+</Text>
-                <Text>A seu alcance, em qualquer lugar</Text>
+            <View style={styles.contactsContainer}>
+              <View style={styles.titleContactsContainer}>
+                <Text style={styles.contactsTitleText}>Contatos</Text>
               </View>
-              
-            </View>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+                <Ionicons name="logo-instagram" size={24} color="lightblue" />
+                <Ionicons name="logo-facebook" size={24} color="lightblue" />
+                <Ionicons name="logo-linkedin" size={24} color="lightblue" />
 
-            <Text>Um produto © RBTech LTDA </Text>
+              </View>
+
+              <Text style={styles.copyright}>© RBTech LTDA </Text>
+            </View>
           </View>
 
         </View>

@@ -4,7 +4,7 @@ export default class LeitorController {
 
   constructor(){}
 
-  static baseUrl = "http://localhost:3000/obra"
+  static baseUrl = "http://localhost:3000/leitor"
 
   static getBuscarTodos = async () => {
     let res;

@@ -10,6 +10,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import ModalCustom from '../Components/ModalCustom';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import CustomDrawer from './CustomDrawer'
+import Dashboard from '../Screens/Dashboard';
+import Emprestimos from '../Screens/Emprestimos';
 
 const Drawer = createDrawerNavigator();
 
@@ -30,58 +32,7 @@ const CustomSidebarMenu = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.profileContainer}>
-        <View style={styles.topProfile}>
-          <View style={styles.logoutIconContainer}>
-            <TouchableOpacity 
-              onPress={() => handleLogout()} 
-              style={{backgroundColor: 'red', padding: 30}}
-              >
-              <SimpleLineIcons name="logout" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.topLogoContainer}>
-            <Text style={styles.titleText}>Leia+</Text>
-            <View style={styles.socialMediaContainer}>
-              <Text style={styles.subtitleText}>Livros em qualquer lugar</Text>
-              <View style={styles.iconsContainer}>
-                <Ionicons name="logo-instagram" size={15} color={SOCIAL_MEDIAS_COLORS} />
-                <Ionicons name="logo-facebook" size={15} color={SOCIAL_MEDIAS_COLORS} />
-                <Ionicons name="logo-linkedin" size={15} color={SOCIAL_MEDIAS_COLORS} />
-
-              </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.imageProfileContainer}>
-          <Ionicons name="person-outline" size={100} color="black" />
-        </View>
-        <View style={styles.bottomProfileContainer}>
-          <Text>Seja bem vindo, <Text>{user?.nome}</Text></Text>
-        </View>
-
-      </View>
-
-      <View style={styles.menuContentContainer}>
-        <DrawerContentScrollView {...props} >
-          <DrawerItemList {...props} />
-        </DrawerContentScrollView>
-      </View>
-      <View style={styles.footerContainer}>
-        <Text
-          style={{
-            backgroundColor: "blue",
-            paddingHorizontal: 20,
-            paddingVertical: 15,
-            borderRadius: 5,
-            fontSize: 16,
-            textAlign: 'center',
-            color: 'white',
-            paddingVertical: 5
-          }}>
-          © Copyright 2023 RBTech LTDA
-        </Text>
-      </View>
+      
       <>
         <ModalCustom
           isVisible={logginOut}
@@ -122,7 +73,7 @@ const AppStack = () => {
 
       <Drawer.Navigator useLegacyImplementation
         drawerContent={(props) => <CustomDrawer {...props} />}
-        initialRouteName='Livros'
+        initialRouteName='Emprestimos'
         screenOptions={{
           drawerStyle: {
             width: Dimensions.get('screen').width * 0.8
@@ -140,8 +91,10 @@ const AppStack = () => {
           }
         }}
       >
+        <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Livros" component={Livros} />
         <Drawer.Screen name="Autores" component={Autores} />
+        <Drawer.Screen name="Emprestimos" component={Emprestimos} />
       </Drawer.Navigator>
 
     </NavigationContainer>
