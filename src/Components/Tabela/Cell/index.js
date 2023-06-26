@@ -10,7 +10,8 @@ const getValue = (obj, path) => {
 
 const convertDateType = (type, timestamp) => {
   if (type.includes("timestamp")) {
-    const data = new Date(timestamp * 1000);
+    if(timestamp == null) return " - "
+    const data = new Date(timestamp);
     const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const ano = data.getFullYear();
@@ -36,7 +37,8 @@ const Cell = ({ item, cellConfig }) => {
   })
 
   var valueItem = getValue(item, cellConfig["name"])
-  if (cellConfig["type"].includes("date")) valueItem = convertDateType(cellConfig["type"], valueItem)
+  
+  if (cellConfig["type"].includes("date") && valueItem != null) valueItem = convertDateType(cellConfig["type"], valueItem)
 
   return (
     <View
@@ -49,7 +51,7 @@ const Cell = ({ item, cellConfig }) => {
       }
       ]} >
         {
-          cellConfig["type"].includes("date") ? 
+          cellConfig["type"].includes("date") && valueItem != null? 
           <View>
             {
               valueItem.map((data) => {
@@ -59,7 +61,7 @@ const Cell = ({ item, cellConfig }) => {
               })
             }
           </View> :
-          <Text style={innerStyles.cellText}>{valueItem}</Text>
+          <Text style={innerStyles.cellText}>{valueItem ? valueItem : " - "}</Text>
         }
       
     </View>

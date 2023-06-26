@@ -4,6 +4,7 @@ import { styles } from './styles'
 import Tabela from '../../../Components/Tabela'
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import LeitorController from '../../../Controllers/LeitorController'
+import ObraController from '../../../Controllers/ObraController';
 
 const contaId = (data) => {
   let id = 0
@@ -25,9 +26,14 @@ const GerenciarLivros = ({selected, setSelected}) => {
 
   useEffect(() => {
     if(focused){
-      LeitorController.getBuscarTodos().then(res => setLivros(res))
+      ObraController.getBuscarTodos().then(res => setLivros(res))
     }
   }, [focused])
+
+  useEffect(() => {
+    console.log(livros)
+  }, [livros])
+  
 
   useEffect(() => {
     if(selected) navigation.navigate("Livro")
@@ -55,7 +61,13 @@ const GerenciarLivros = ({selected, setSelected}) => {
               alias: "autor",
               size: "40%",
               type: "text"
-            }
+            }/* ,
+            {
+              name: "status",
+              alias: "Status",
+              size: "40%",
+              type: "text"
+            } */
           ]}
           configTable={{
             emptyDataInformation: "Não há livros registrados",

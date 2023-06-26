@@ -18,6 +18,18 @@ export default class ObraController {
     return res 
   }
 
+  static getBuscarTodosDisponiveis = async () => {
+    let res;
+    try {
+      res = await axios.get(this.baseUrl + "/obterTodos/disponivel").then((res) => {
+        return res.data
+      })  
+    } catch (error) {
+    }
+
+    return res 
+  }
+
   static novaObra = async (livro) => {
     let res = false
     try {

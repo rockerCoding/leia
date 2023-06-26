@@ -14,6 +14,16 @@ export default class EmprestimoController {
     })
   }
 
+  static novoEmprestimo = async (emprestimo) => {
+    let res;
+    res = await axios.post(this.baseUrl + "/cadastrar", emprestimo).then((res) => {
+      return true
+    }).catch(error => {
+      return false
+    })
+    return res
+  }
+
   /* static novoAutor = async (livro) => {
     let res;
     try {

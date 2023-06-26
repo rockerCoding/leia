@@ -69,7 +69,7 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
             }
           ]}
           configTable={{
-            emptyDataInformation: "Não há autores registrados",
+            emptyDataInformation: "Não há empréstimos registrados",
             selectable: true,
             borderColor: "red",
             listColor: "white",

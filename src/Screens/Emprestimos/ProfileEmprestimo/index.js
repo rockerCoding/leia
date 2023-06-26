@@ -12,6 +12,7 @@ import ModalCustom from '../../../Components/ModalCustom';
 import { formatarTimeStampUmaLinha } from '../../../Utils/dateUtils'
 import { Picker } from '@react-native-picker/picker';
 import ObraController from '../../../Controllers/ObraController';
+import EmprestimoController from '../../../Controllers/EmprestimoController';
 
 const ProfileEmprestimo = ({ selected }) => {
 
@@ -43,26 +44,14 @@ const ProfileEmprestimo = ({ selected }) => {
   const handleQuestion = () => setShowConfirmDelete(true)
 
   const handleSave = () => {
-    handleLoading()
-    AutorController.novoAutor({ nome: nome }).then((res) => {
-      setHasBeenSaved(res)
-    })
-  }
-
-  const handleSelection = (choosed) => {
-    let obj = { id: selected.id }
-    if (choosed) {
-      setIsLoading(true)
-      setTimeout(() => {
-        AutorController.deletarAutor(obj).then((res) => {
-          setHasBeenDeleted(res)
-          setTimeout(() => {
-            setGoBack(true)
-          }, 2000);
-        })
-      }, 2000);
+    console.log(leitor)
+    let obj = {
+      leitor: parseInt(leitor),
+      obra: parseInt(titulo)
     }
-    else console.log('cancelar')
+    EmprestimoController.novoEmprestimo(obj).then((res) => {
+      console.log(res)
+    })
   }
 
   const handleReset = () => {
@@ -71,178 +60,183 @@ const ProfileEmprestimo = ({ selected }) => {
     setIsLoading(false)
   }
 
-  useEffect(() => {
-    if (goBack) navigation.goBack()
-  }, [goBack])
+    useEffect(() => {
+      if (goBack) navigation.goBack()
+    }, [goBack])
 
-  useEffect(() => {
-    LeitorController.getBuscarTodos().then(res => setLeitores(res))
-    ObraController.getBuscarTodos().then(res => setObras(res))
-  }, [])
-
-  useEffect(() => {
-    console.log(leitores)
-  }, [leitores])
-  useEffect(() => {
-    console.log(obras)
-  }, [obras])
-  
+    useEffect(() => {
+      LeitorController.getBuscarTodos().then(res => setLeitores(res))
+      ObraController.getBuscarTodosDisponiveis().then(res => setObras(res))
+    }, [])
 
 
-  const ReturnPickerList = ({ arrayOf, label, value, selectedValue, setSelectedValue }) => {
+    const ReturnPickerList = ({ arrayOf, label, value, selectedValue, setSelectedValue, customEmptyMsg }) => {
+
+      return (
+        <Picker
+          style={{ paddingVertical: 15, paddingLeft: 10 }}
+          itemStyle={{ width: "70%" }}
+          selectedValue={selectedValue}
+          onValueChange={(itemValue, itemIndex) => {
+            setSelectedValue(itemValue)
+          }}>
+          <Picker.Item label={customEmptyMsg ? customEmptyMsg : "Escolha uma opção"} value="" key="" enabled={false} />
+          {
+            arrayOf.map((item, index) => {
+              return (
+                <Picker.Item label={item[label]} value={item[value]} key={item[value] + item[label]} />
+              )
+            })
+          }
+        </Picker>
+      )
+
+    }
+
+
 
     return (
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => {
-          setSelectedValue(itemValue)
-        }}>
-        {
-          arrayOf.map((item, index) => {
-            return (
-              <Picker.Item label={item[label]} value={item[value]} key={item[value] + item[label]} />
-            )
-          })
-        }
-      </Picker>
-    )
+      <>
 
-  }
+        <View style={styles.container}>
+          <View style={styles.topContainer}>
+
+          </View>
+          <View style={styles.middleContainer}>
+
+            {
+              selected ?
+                <>
+                  <TextInput
+                    value={idEmprestimo}
+                    disabled
+                    mode='outlined'
+                    label="Id"
+                  />
+                  <TextInput
+                    value={leitor}
+                    disabled={selected == null}
+                    mode='outlined'
+                    label="Leitor"
+                  />
+                  <TextInput
+                    value={titulo}
+                    disabled
+                    mode='outlined'
+                    label="Título"
+                  />
+                  <View style={{ flexDirection: 'row' }}>
+                    <TextInput
+                      style={{ flex: 1 }}
+                      value={dataEmprestimo}
+                      disabled
+                      mode='outlined'
+                      label="Data Empréstimo"
+                    />
+                    <TextInput
+                      style={{ flex: 1, marginLeft: 10 }}
+                      value={dataDevolucao}
+                      disabled
+                      mode='outlined'
+                      label="Data Devolução"
+                    />
+
+                  </View>
+                  <TextInput
+                    value={status}
+                    disabled
+                    mode='outlined'
+                    label="Status Atual"
+                    contentStyle={{ textTransform: 'uppercase' }}
+                  />
+                </>
+                :
+                <>
+                  {leitores && <ReturnPickerList arrayOf={leitores} label="nome" value="id" selectedValue={leitor} setSelectedValue={setLeitor} customEmptyMsg="Escolha um leitor" />}
+                  {obras && <ReturnPickerList arrayOf={obras} label="titulo" value="id" selectedValue={titulo} setSelectedValue={setTitulo} customEmptyMsg="Escolha uma obra" />}
+                </>
+            }
 
 
+          </View>
+          <View style={styles.bottomContainer}>
+            {
+              selected ?
+                <>
+                  <Button title='Cancelar' color="red" />
+                  <Button title='Finalizar' color="blue" />
+                </> :
+                <>
+                  <Button title='Registrar Empréstimo' color="green" onPress={() => handleSave()} />
+                </>
+            }
 
-  return (
-    <>
+          </View>
 
-      <View style={styles.container}>
-        <View style={styles.topContainer}>
 
-        </View>
-        <View style={styles.middleContainer}>
-
-          {selected &&
-            <TextInput
-              value={idEmprestimo}
-              disabled
-              mode='outlined'
-              label="Id"
-            />
-          }
+        </View >
+        <>
           {
             selected ?
               <>
-                <TextInput
-                  value={leitor}
-                  disabled={selected == null}
-                  mode='outlined'
-                  label="Leitor"
+                <ModalCustom
+                  isVisible={showConfirmDelete}
+                  setIsVisible={setShowConfirmDelete}
+                  backdropQuit={true}
+                  type="question"
+                  question={{
+                    title: "Deseja confirmar a exclusão de " + selected.nome + "?",
+                    handleFunction: (selection) => handleSelection(selection),
+                    quitOnClick: true,
+                    buttons: [
+                      {
+                        name: "Confirmar",
+                        respond: true,
+                        color: "green"
+                      },
+                      {
+                        name: "Cancelar",
+                        respond: false,
+                        color: "red"
+                      }
+                    ]
+                  }}
                 />
-              </>
-              :
-              <>
-                {leitores && <ReturnPickerList arrayOf={leitores} label="nome" value="id" selectedValue={leitor} setSelectedValue={setLeitor} />}
-                {obras && <ReturnPickerList  arrayOf={obras} label="titulo" value="id" selectedValue={titulo} setSelectedValue={setTitulo} />}
-              </>
-
-          }
-          <TextInput
-            value={titulo}
-            disabled
-            mode='outlined'
-            label="Título"
-          />
-          <TextInput
-            value={dataEmprestimo}
-            disabled
-            mode='outlined'
-            label="Data Empréstimo"
-          />
-          <TextInput
-            value={dataDevolucao}
-            disabled
-            mode='outlined'
-            label="Data Devolução"
-          />
-          <TextInput
-            value={status}
-            disabled
-            mode='outlined'
-            label="Status Atual"
-            contentStyle={{ textTransform: 'uppercase' }}
-          />
-        </View>
-        <View style={styles.bottomContainer}>
-          {
-            selected &&
-            <Button title='Editar' color="green" />
-          }
-
-        </View>
-
-
-      </View >
-      <>
-        {
-          selected ?
-            <>
-              <ModalCustom
-                isVisible={showConfirmDelete}
-                setIsVisible={setShowConfirmDelete}
-                backdropQuit={true}
-                type="question"
-                question={{
-                  title: "Deseja confirmar a exclusão de " + selected.nome + "?",
-                  handleFunction: (selection) => handleSelection(selection),
-                  quitOnClick: true,
-                  buttons: [
-                    {
-                      name: "Confirmar",
-                      respond: true,
-                      color: "green"
-                    },
-                    {
-                      name: "Cancelar",
-                      respond: false,
-                      color: "red"
+                <ModalCustom
+                  isVisible={isLoading}
+                  setIsVisible={setIsLoading}
+                  haveResponse={hasBeenDeleted}
+                  type="loadingWithRespond"
+                  responses={{
+                    success: {
+                      text: "Exclusão de " + selected.nome + " realizada com sucesso",
+                      component: <Text>Exclusão de <Text style={{ fontWeight: '700' }}>{selected.nome}</Text> realizada com sucesso</Text>
                     }
-                  ]
-                }}
-              />
+                  }}
+                />
+              </> :
               <ModalCustom
                 isVisible={isLoading}
                 setIsVisible={setIsLoading}
-                haveResponse={hasBeenDeleted}
+                haveResponse={hasBeenSaved}
                 type="loadingWithRespond"
+                durationAfterResponse={3000}
                 responses={{
                   success: {
-                    text: "Exclusão de " + selected.nome + " realizada com sucesso",
-                    component: <Text>Exclusão de <Text style={{ fontWeight: '700' }}>{selected.nome}</Text> realizada com sucesso</Text>
-                  }
+                    //text: nome + " incluso com sucesso!",
+                    component: <Text>Inclusão de <Text style={{ fontWeight: '700' }}>{nome}</Text> realizada com sucesso</Text>
+                  },
+                  onFinish: () => handleReset()
                 }}
               />
-            </> :
-            <ModalCustom
-              isVisible={isLoading}
-              setIsVisible={setIsLoading}
-              haveResponse={hasBeenSaved}
-              type="loadingWithRespond"
-              durationAfterResponse={3000}
-              responses={{
-                success: {
-                  //text: nome + " incluso com sucesso!",
-                  component: <Text>Inclusão de <Text style={{ fontWeight: '700' }}>{nome}</Text> realizada com sucesso</Text>
-                },
-                onFinish: () => handleReset()
-              }}
-            />
 
 
-        }
+          }
 
 
+        </>
       </>
-    </>
-  )
-}
+    )
+  }
 
-export default ProfileEmprestimo
+  export default ProfileEmprestimo
