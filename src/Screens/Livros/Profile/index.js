@@ -73,7 +73,7 @@ const Profile = ({ selected }) => {
   }, [])
 
   useEffect(() => {
-    console.log(autor)
+
   }, [autor])
 
   useEffect(() => {

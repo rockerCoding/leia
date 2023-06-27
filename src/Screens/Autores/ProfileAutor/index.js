@@ -14,23 +14,26 @@ const ProfileAutor = ({ selected }) => {
 
   const navigation = useNavigation()
 
-  const [modalIsVisible, setModalIsVisible]       = useState(false)
-  const [nome, setNome]                           = useState(selected ? selected.nome : "")
-  const [hasBeenSaved, setHasBeenSaved]           = useState(null)
-  const [hasBeenDeleted, setHasBeenDeleted]       = useState(null)
-  const [isDisabled, setIsDisabled]               = useState(selected ? true : false)
-  const [isLoading, setIsLoading]                 = useState(false)
+  const [modalIsVisible, setModalIsVisible] = useState(false)
+  const [nome, setNome] = useState(selected ? selected.nome : "")
+  const [hasBeenSaved, setHasBeenSaved] = useState(null)
+  const [hasBeenDeleted, setHasBeenDeleted] = useState(null)
+  const [isDisabled, setIsDisabled] = useState(selected ? true : false)
+  const [isLoading, setIsLoading] = useState(false)
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-  const [goBack, setGoBack]                       = useState(false)
-  
+  const [goBack, setGoBack] = useState(false)
+
   const handleEdit = () => setIsDisabled(!isDisabled)
   const handleLoading = () => { setIsLoading(!isLoading) }
   const handleQuestion = () => setShowConfirmDelete(true)
-  
+
   const handleSave = () => {
     handleLoading()
     AutorController.novoAutor({ nome: nome }).then((res) => {
-      setHasBeenSaved(res)
+      setTimeout(() => {
+        setHasBeenSaved(res)
+
+      }, 2500);
     })
   }
 

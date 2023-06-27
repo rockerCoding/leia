@@ -3,7 +3,6 @@ import React from 'react'
 import { styles } from './styles'
 
 const Header = ({ configs, configTable, loading }) => {
-  console.log(configTable)
   return (
     configs ?
       <View style={styles.container}>

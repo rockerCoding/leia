@@ -18,7 +18,6 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
   }
 
   useEffect(() => {
-    console.log(emprestimos)
   
   }, [emprestimos])
   

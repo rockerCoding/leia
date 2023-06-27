@@ -10,7 +10,6 @@ export default class UserController {
 
   static login = async (login) => {
     let res;
-    console.log(login)
     try {
       res = await axios.post(this.baseUrl + "/login", login).then((res) => {
         if(res.data == "") return res.status(400)

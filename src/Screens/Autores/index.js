@@ -6,26 +6,36 @@ import {
   HeaderBackButton,
 } from '@react-navigation/stack';
 import { View, Text, TouchableOpacity, FlatList, Button, Dimensions } from 'react-native'
-import Header from './Header';
+
+
 import EmprestimosPorLivro from './EmprestimosPorLivro';
 import GerenciarAutores from './GerenciarAutores';
 import ProfileAutor from './ProfileAutor';
+import Header from './Header';
 
 const Stack = createStackNavigator();
 
 const Autores = () => {
 
   const [selected, setSelected] = useState(null)
+  const [refreshAutores, setRefreshAutores] = useState(false)
+
+  const handleRefreshAutores = () => setRefreshAutores(!refreshAutores)
 
   return (
     <NavigationContainer independent>
       <Stack.Navigator
-        initialRouteName='Lista'
+        initialRouteName='Autores'
         screenOptions={({ navigation, route }) => ({
-          header: (props) => <Header {...props} selected={selected} setSelected={setSelected}/>
+          /* header: (props) => <Header {...props} selected={selected} setSelected={setSelected}/> */
+          header: (props) => 
+            <Header {...props} 
+              selected={selected} setSelected={setSelected}
+              handleRefresh={handleRefreshAutores}
+            />  
         })}>
-        <Stack.Screen name="Lista">
-          {() => <GerenciarAutores selected={selected} setSelected={setSelected}/>}
+        <Stack.Screen name="Autores">
+          {() => <GerenciarAutores selected={selected} setSelected={setSelected} refreshAutores={refreshAutores}/>}
         </Stack.Screen>
         <Stack.Screen name="Autor">
           {() => <ProfileAutor selected={selected} />}

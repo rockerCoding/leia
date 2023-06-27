@@ -5,7 +5,7 @@ import Tabela from '../../../Components/Tabela'
 import { useNavigation, useIsFocused, DrawerActions } from '@react-navigation/native';
 import AutorController from '../../../Controllers/AutorController';
 
-const GerenciarAutores = ({ selected, setSelected }) => {
+const GerenciarAutores = ({ selected, setSelected, refreshAutores }) => {
 
   const navigation            = useNavigation()
   const focused               = useIsFocused()
@@ -18,7 +18,7 @@ const GerenciarAutores = ({ selected, setSelected }) => {
 
   useEffect(() => {
     if (focused) fetchAutores()
-  }, [focused])
+  }, [focused, refreshAutores])
 
   useEffect(() => {
     if (selected) navigation.navigate("Autor")

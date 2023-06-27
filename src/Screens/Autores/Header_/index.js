@@ -2,17 +2,19 @@ import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
 
-const BACKGROUND_THEME_COLOR = "#6db349"
 
-const HeaderAutor = (props) => {
+const Header = (props) => {
 
   const [canGoBack, setCanGoBack] = useState(false)
   const [isSelected, setIsSelected] = useState(false)
 
   useEffect(() => {
-    if (props) setCanGoBack(props.navigation.canGoBack() ? true : false)
+    if (props) {
+      setCanGoBack(props.navigation.canGoBack() ? true : false)
+    }
     if (props.selected) setIsSelected(true)
     else setIsSelected(false)
   }, [props])
@@ -22,27 +24,14 @@ const HeaderAutor = (props) => {
     props.navigation.navigate("Novo Autor")
   }
 
-  const handleRefresh = () => {
-    props.handleRefresh()
-  }
-
   const rightIconProfile = (selected, name) => {
 
     switch (name) {
-      case "Autores":
+      case "Lista":
         return (
-          <>
-            {
-              props.handleRefresh &&
-              <TouchableOpacity onPress={() => handleRefresh()} style={{ position: 'relative' }} >
-                <Ionicons name="md-refresh-sharp" size={20} color="white" />
-              </TouchableOpacity>
-            }
-            <TouchableOpacity onPress={() => handleNewAuthor()} style={{ position: 'relative' }} >
-              <FontAwesome5 name="book-reader" size={20} color="white" />
-              <Text style={{ fontSize: 20, position: 'absolute', fontWeight: '700', right: -10, bottom: -10, color: 'white' }}>+</Text>
-            </TouchableOpacity>
-          </>
+          <TouchableOpacity onPress={() => handleNewAuthor()}>
+            <MaterialIcons name="person-add-alt-1" size={24} color="black" />
+          </TouchableOpacity>
         )
         break;
       case "Profile":
@@ -68,12 +57,13 @@ const HeaderAutor = (props) => {
 
   return (
     props &&
-    <View style={[styles.container, { backgroundColor: BACKGROUND_THEME_COLOR }]}>
+    <View style={styles.container}>
       <View style={styles.leftContainer}>
         {
           canGoBack &&
+
           <Pressable onPress={() => handleGoBack(props.route.name)}>
-            <Ionicons name="caret-back" size={25} color="white" />
+            <Ionicons name="caret-back" size={30} color="black" />
           </Pressable>
         }
       </View>
@@ -87,4 +77,4 @@ const HeaderAutor = (props) => {
   )
 }
 
-export default HeaderAutor
+export default Header

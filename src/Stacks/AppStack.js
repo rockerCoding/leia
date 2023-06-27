@@ -73,7 +73,7 @@ const AppStack = () => {
 
       <Drawer.Navigator useLegacyImplementation
         drawerContent={(props) => <CustomDrawer {...props} />}
-        initialRouteName='Emprestimos'
+        initialRouteName='Autores'
         screenOptions={{
           drawerStyle: {
             width: Dimensions.get('screen').width * 0.8

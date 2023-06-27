@@ -3,38 +3,38 @@ import { Dimensions, StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: Dimensions.get("screen").height * 0.08,
-    marginVertical: 10
-    
+    height: Dimensions.get("screen").height * 0.07,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 10
   },
   allCenter: {
     justifyContent: 'center', alignItems: 'center'
   },
   leftContainer: {
-    flex: 1,
-    justifyContent: 'center', alignItems: 'center'
+    flex: 2,
+    justifyContent: 'center', alignItems: 'center',
+    marginTop: 2
   }, 
-
 
   // middle
   middleContainer: {
-    flex: 5,
+    flex: 4,
     justifyContent: 'center', alignItems: 'center'
   },
   textTitle: {
     textTransform: "uppercase",
-    fontSize: 30,
-    paddingHorizontal: 30,
-    paddingVertical: 5,
-    borderRadius: 5,
-    backgroundColor: 'blue',
-    color: "white"
-
+    fontSize: 20,
+    color: "white",
+    letterSpacing: 1
   },
 
   // Opcao por pagina
   rightContainer: {
-    flex: 1,
-    justifyContent: 'center', alignItems: 'center'
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly', alignItems: 'center'
+    //justifyContent: 'center', alignItems: 'flex-start',
+    //marginRight: 5
   }
 })

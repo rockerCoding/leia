@@ -31,7 +31,7 @@ const GerenciarLivros = ({selected, setSelected}) => {
   }, [focused])
 
   useEffect(() => {
-    console.log(livros)
+    
   }, [livros])
   
 

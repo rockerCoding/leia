@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, Image } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground, Image, Pressable } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../Contexts/AuthContext'
 import { Ionicons, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons';
@@ -34,9 +34,9 @@ const CustonDrawer = (props) => {
                 <Ionicons name="md-person-circle" size={100} color="white" />
               </View>
               <View style={{ flex: 1 }}>
-                <View style={styles.optionsIcons}>
+                <Pressable style={styles.optionsIcons} onPress={() => handleLogout()}>
                   <MaterialIcons name="logout" size={TOP_ICONS_MEDIAS_SIZE} color={TOP_ICONS_MEDIAS_COLORS} />
-                </View>
+                </Pressable>
               </View>
             </View>
             <View style={styles.bottomHeaderContainer}>

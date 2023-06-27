@@ -14,7 +14,7 @@ const PrincipalStack = () => {
   const { user } = useContext(AuthContext)
 
   return (
-    !user ? <AppStack /> : <SignIn />
+    user ? <AppStack /> : <SignIn />
   )
 }
 
