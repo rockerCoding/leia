@@ -12,7 +12,7 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
   const focused               = useIsFocused()
   const [emprestimos, setEmprestimos] = useState(null)
 
-  const fetchAutores = () => {
+  const fetchEmprestimos = () => {
     setEmprestimos(null)
     EmprestimoController.getBuscarTodos().then(res => setEmprestimos(res))
   }
@@ -23,7 +23,7 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
   
 
   useEffect(() => {
-    if (focused) fetchAutores()
+    if (focused) fetchEmprestimos()
   }, [focused])
 
   useEffect(() => {
@@ -40,7 +40,14 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
             {
               name: "id",
               size: "20%",
-              type: "numeric"
+              type: "custom",
+              component: (item) =>  
+                <View style={{justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row'}}>
+                  <View style={{width: 15, height: 15, 
+                    backgroundColor: item["status"] == "cancelado" ? 'red' : item["status"] == "emprestado" ? 'lightgreen' : "blue", 
+                    borderRadius: 20}} />
+                  <Text>{item["id"]}</Text>
+                </View>
             },
             {
               name: "leitor.nome",
@@ -65,22 +72,35 @@ const GerenciarEmprestimos = ({ selected, setSelected }) => {
               size: "30%",
               type: 'date/timestamp',
               alias: "Devolução"
+            },
+            {
+              name: "status",
+              size: "30%",
+              type: 'text',
+              alias: "Status"
             }
           ]}
           configTable={{
             emptyDataInformation: "Não há empréstimos registrados",
             selectable: true,
-            borderColor: "red",
+            borderColor: "#42628C",
             listColor: "white",
-            /* title: "Autores",
-            titleColor: "green",
-            titleTextColor: "white", */
-            headerColor: "rgba(172, 27, 102, 0.8)",
+            headerColor: "#42628C",
             headerTextColor: "white",
             borderRadius: 5,
-            zebra: ["white", "rgba(219, 157, 189, 0.8)"],
+            zebra: ["white", "#d2d1d1"],
             hasRefresh: true,
-            refreshButton: () => fetchAutores()
+            refreshButton: () => fetchAutores(),
+            legends: {
+              backgroundColor: "#42628C",
+              perLine: 3,
+              data : [
+                { name: "cancelado", color: '#FF0000' },
+                /* { name: "em atraso", color: '#FFFF00' }, */
+                { name: "emprestado", color: '#90EE90' },
+                { name: "devolvido", color: '#0000FF' }
+              ]
+            }
           }}
           setSelected={setSelected}
 

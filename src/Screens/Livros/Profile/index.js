@@ -34,9 +34,12 @@ const Profile = ({ selected }) => {
       titulo: titulo,
       autor: autor
     }
-    ObraController.novaObra(obj).then((res) => {
-      setHasBeenSaved(res)
-    }).catch((erro) => console.log(erro))
+    setTimeout(() => {
+      ObraController.novaObra(obj).then((res) => {
+        setHasBeenSaved(res)
+      }).catch((erro) => console.log(erro))
+      
+    }, 2000);
 
   }
 
@@ -53,11 +56,12 @@ const Profile = ({ selected }) => {
   }
 
   const handleSelection = (choosed) => {
+    setIsLoading(true)
     let obj = { id: selected.id }
     if (choosed) {
-      setIsLoading(true)
       setTimeout(() => {
         ObraController.deletarObra(obj).then((res) => {
+          console.log(res)
           setHasBeenDeleted(res)
           setTimeout(() => {
             setGoBack(true)
@@ -71,10 +75,6 @@ const Profile = ({ selected }) => {
   useEffect(() => {
     AutorController.getBuscarTodos().then(res => setAutores(res))
   }, [])
-
-  useEffect(() => {
-
-  }, [autor])
 
   useEffect(() => {
     if (goBack) navigation.goBack()
@@ -149,12 +149,12 @@ const Profile = ({ selected }) => {
           <ModalCustom
             isVisible={showConfirmDelete}
             setIsVisible={setShowConfirmDelete}
-            backdropQuit={true}
+            /* backdropQuit={true} */
             type="question"
             question={{
               title: "Deseja confirmar a exclusão de " + selected.titulo + "?",
               handleFunction: (selection) => handleSelection(selection),
-              quitOnClick: true,
+              /* quitOnClick: true, */
               buttons: [
                 {
                   name: "Confirmar",

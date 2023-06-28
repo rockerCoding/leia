@@ -24,7 +24,7 @@ const Emprestimos = () => {
           {() => <GerenciarEmprestimos selected={selected} setSelected={setSelected}/>}
         </Stack.Screen>
         <Stack.Screen name="Empréstimo">
-          {() => <ProfileEmprestimos selected={selected} />}
+          {() => <ProfileEmprestimos selected={selected} setSelected={setSelected} />}
         </Stack.Screen>
         <Stack.Screen name="Novo Empréstimo">
           {() => <ProfileEmprestimos />}

@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect } from 'react'
 import Modal from "react-native-modal";
 import { styles } from './styles';
@@ -64,8 +64,17 @@ const ModalCustom = ({
           <View style={{ flex: 1 }}>
             {
               responses.success.component ?
-              responses.success.component :
-              <Text>{haveResponse.success}</Text>
+                responses.success.component :
+                <View style={{flex: 1}}>
+                  <Text>{haveResponse.success}</Text>
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Image
+                      style={{ width: 100, height: 100 }}
+                      source={require('../../../assets/images/check.png')}
+                    />
+                  </View>
+
+                </View>
             }
           </View> :
           <View style={{ flex: 1 }}>
@@ -75,13 +84,13 @@ const ModalCustom = ({
   }
 
   useEffect(() => {
-    if(haveResponse) handleTimeout()
+    if (haveResponse) handleTimeout()
   }, [haveResponse])
 
 
   const handleTimeout = () => {
     setTimeout(() => {
-      if(responses.onFinish) responses.onFinish()
+      if (responses.onFinish) responses.onFinish()
     }, durationAfterResponse ? durationAfterResponse : 1500);
   }
 

@@ -10,7 +10,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ModalCustom from '../../../Components/ModalCustom';
 
-const ProfileAutor = ({ selected }) => {
+const ProfileLeitor = ({ selected }) => {
 
   const navigation = useNavigation()
 
@@ -183,4 +183,4 @@ const ProfileAutor = ({ selected }) => {
   )
 }
 
-export default ProfileAutor
+export default ProfileLeitor

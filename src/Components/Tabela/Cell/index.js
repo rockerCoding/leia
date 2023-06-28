@@ -10,7 +10,7 @@ const getValue = (obj, path) => {
 
 const convertDateType = (type, timestamp) => {
   if (type.includes("timestamp")) {
-    if(timestamp == null) return " - "
+    if (timestamp == null) return " - "
     const data = new Date(timestamp);
     const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -22,7 +22,7 @@ const convertDateType = (type, timestamp) => {
     let datas = []
     datas.push(`${dia}/${mes}/${ano}`)
     datas.push(`${horas}:${minutos}:${segundos}`)
-    
+
     return datas;
   }
 }
@@ -37,10 +37,11 @@ const Cell = ({ item, cellConfig }) => {
   })
 
   var valueItem = getValue(item, cellConfig["name"])
-  
+
   if (cellConfig["type"].includes("date") && valueItem != null) valueItem = convertDateType(cellConfig["type"], valueItem)
 
   return (
+
     <View
       style={[styles.container,
       {
@@ -50,21 +51,26 @@ const Cell = ({ item, cellConfig }) => {
         borderStyle: 'solid'
       }
       ]} >
-        {
-          cellConfig["type"].includes("date") && valueItem != null? 
+      {
+        cellConfig.component == null ?
+          cellConfig["type"].includes("date") && valueItem != null ?
+            <View>
+              {
+                valueItem.map((data) => {
+                  return (
+                    <Text style={innerStyles.cellText} key={"data" + data}>{data}</Text>
+                  )
+                })
+              }
+            </View> :
+            <Text style={innerStyles.cellText}>{valueItem ? valueItem : " - "}</Text>
+          :
           <View>
-            {
-              valueItem.map((data) => {
-                return (
-                  <Text style={innerStyles.cellText} key={"data" + data}>{data}</Text>
-                )
-              })
-            }
-          </View> :
-          <Text style={innerStyles.cellText}>{valueItem ? valueItem : " - "}</Text>
-        }
-      
+            {cellConfig.component(item)}
+          </View>
+      }
     </View>
+
   )
 }
 

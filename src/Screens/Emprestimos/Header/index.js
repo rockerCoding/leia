@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { Snackbar } from 'react-native-paper';
 
-const BACKGROUND_THEME_COLOR = "rgba(172, 27, 102, 0.8)"
+const BACKGROUND_THEME_COLOR = "#42628C"
 
 const Header = (props) => {
 

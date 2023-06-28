@@ -9,6 +9,7 @@ import ErrorDataRequest from './ErrorDataRequest'
 import IsLoadingComponent from './IsLoadingComponent'
 import AlertTable from './AlertTable'
 import { Ionicons } from '@expo/vector-icons';
+import Legends from './Legends'
 
 const percentToPixels = (valor, total) => {
   let value = parseInt(valor.split("%")[0])
@@ -62,11 +63,16 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
     let initialSizesColumns = []
     let initialTypesColumns = []
 
+    let initialCustomComponents = []
+
     configColumns.forEach((i) => {
       initialNamesColumns.push(i["name"])
       initialAliasColumns.push(i["alias"] ? i["alias"] : i["name"])
       initialSizesColumns.push(percentToPixels(i["size"], totalContainer))
       initialTypesColumns.push(i["type"])
+
+      initialCustomComponents.push(i["component"] ? i["component"] : null)
+
     })
 
     let initialConfigs = []
@@ -76,7 +82,8 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
         name: initialNamesColumns[i],
         size: initialSizesColumns[i],
         type: initialTypesColumns[i],
-        alias: initialAliasColumns[i]
+        alias: initialAliasColumns[i],
+        component: initialCustomComponents[i]
       }
       initialConfigs.push(obj)
     })
@@ -121,18 +128,18 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
       justifyContent: 'center', alignItems: 'center'
     },
     titleRefreshButtonContainer: {
-      position: 'absolute', right: 0, 
+      position: 'absolute', right: 0,
       marginRight: 10,
     }
   })
 
-  const Title = ({hasRefresh, refreshButton}) => {
+  const Title = ({ hasRefresh, refreshButton }) => {
 
     return (
       <View style={innerStyles.titleContainer}>
         <Text style={innerStyles.titleText}>{title}</Text>
         {
-          configTable.hasRefresh && 
+          configTable.hasRefresh &&
           <Pressable style={innerStyles.titleRefreshButtonContainer} onPress={() => configTable.refreshButton()}>
             <Ionicons name="ios-refresh" size={24} color="white" />
           </Pressable>
@@ -157,33 +164,39 @@ const Tabela = ({ data, configTable, configColumns, setSelected, rowCondition })
         >
           {
             data ?
-            !error ?
-              data.length > 0 ?
-                <FlatList
-                  data={data}
-                  style={innerStyles.flatlistContainer}
-                  stickyHeaderIndices={[0]}
-                  ListHeaderComponent={<Header configs={configs} configTable={configTable}/>}
-                  ListEmptyComponent={<EmptyComponent configs={configs} message={configTable?.emptyDataInformation ? configTable.emptyDataInformation : "Não há dados para serem exibidos"} />}
-                  renderItem={({ item, index }) =>
-                    <TouchableOpacity onPress={() => handleSelected(item)}
-                      style={{ backgroundColor: configTable?.zebra ? configTable.zebra[index % 2] : "white" }}
-                    >
-                      <Row
-                        item={item}
-                        index={index}
-                        configs={configs}
-                        conditions={rowCondition}
-                        key={"row" + index} />
-                    </TouchableOpacity>
-                  }
-                /> :
-                <AlertTable type="empty" message={configTable.emptyDataInformation} size={totalContainer}/>
-              : <AlertTable type="error" message={data} size={totalContainer}/>
-            : <AlertTable type="loading" size={totalContainer} message={"Buscando informações " + (title ? "de " + title : "") }/>
+              !error ?
+                data.length > 0 ?
+                  <FlatList
+                    data={data}
+                    style={innerStyles.flatlistContainer}
+                    stickyHeaderIndices={[0]}
+                    ListHeaderComponent={<Header configs={configs} configTable={configTable} />}
+                    ListEmptyComponent={<EmptyComponent configs={configs} message={configTable?.emptyDataInformation ? configTable.emptyDataInformation : "Não há dados para serem exibidos"} />}
+                    renderItem={({ item, index }) =>
+                      <TouchableOpacity onPress={() => handleSelected(item)}
+                        style={{ backgroundColor: configTable?.zebra ? configTable.zebra[index % 2] : "white" }}
+                      >
+                        <Row
+                          item={item}
+                          index={index}
+                          configs={configs}
+                          conditions={rowCondition}
+                          key={"row" + index} />
+                      </TouchableOpacity>
+                    }
+                  /> :
+                  <AlertTable type="empty" message={configTable.emptyDataInformation} size={totalContainer} />
+                : <AlertTable type="error" message={data} size={totalContainer} />
+              : <AlertTable type="loading" size={totalContainer} message={"Buscando informações " + (title ? "de " + title : "")} />
           }
         </ScrollView>
+        {
+          configTable?.legends && <Legends configTable={configTable}/>
+        }
+        
       </View>
+
+
     </TabelaProvider>
   )
 }

@@ -15,7 +15,7 @@ const contaId = (data) => {
 }
 
 
-const GerenciarLivros = ({selected, setSelected}) => {
+const GerenciarLivros = ({selected, setSelected, refreshLivros}) => {
 
   const navigation = useNavigation()
   const focused = useIsFocused()
@@ -26,9 +26,13 @@ const GerenciarLivros = ({selected, setSelected}) => {
 
   useEffect(() => {
     if(focused){
-      ObraController.getBuscarTodos().then(res => setLivros(res))
+      console.log('teste')
+      setLivros(null)
+      ObraController.getBuscarTodos().then(res => setTimeout(() => {
+        setLivros(res)
+      }, 1000))
     }
-  }, [focused])
+  }, [focused, refreshLivros])
 
   useEffect(() => {
     
@@ -75,9 +79,9 @@ const GerenciarLivros = ({selected, setSelected}) => {
             borderColor: "blue",
             listColor: "white",
             /* title: "Lista de Livros", 
-            titleColor: "#436ed4",
+            titleColor: "#35528C",
             titleTextColor: "white",*/
-            headerColor: "#436ed4",
+            headerColor: "#35528C",
             headerTextColor: "whitesmoke",
             borderRadius: 5,
             zebra: ["white", "#cddcfc"]

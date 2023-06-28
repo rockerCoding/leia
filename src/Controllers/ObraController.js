@@ -18,10 +18,10 @@ export default class ObraController {
     return res 
   }
 
-  static getBuscarTodosDisponiveis = async () => {
+  static getBuscarTodosByStatus = async (status) => {
     let res;
     try {
-      res = await axios.get(this.baseUrl + "/obterTodos/disponivel").then((res) => {
+      res = await axios.get(this.baseUrl + "/obterTodos/" + status).then((res) => {
         return res.data
       })  
     } catch (error) {

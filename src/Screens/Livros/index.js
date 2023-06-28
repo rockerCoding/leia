@@ -16,16 +16,19 @@ const Stack = createStackNavigator();
 const Autores = () => {
 
   const [selected, setSelected] = useState(null)
+  const [refreshLivros, setRefreshLivros] = useState(false)
+
+  const handleRefreshLivros = () => setRefreshLivros(!refreshLivros)
 
   return (
     <NavigationContainer independent>
       <Stack.Navigator
         initialRouteName='Lista'
         screenOptions={({ navigation, route }) => ({
-          header: (props) => <Header {...props} selected={selected} setSelected={setSelected}/>
+          header: (props) => <Header {...props} selected={selected} setSelected={setSelected} handleRefresh={handleRefreshLivros}/>
         })}>
-        <Stack.Screen name="Lista">
-          {() => <GerenciarLivros selected={selected} setSelected={setSelected}/>}
+        <Stack.Screen name="Livros">
+          {() => <GerenciarLivros selected={selected} setSelected={setSelected} refreshLivros={refreshLivros}/>}
         </Stack.Screen>
         <Stack.Screen name="Livro">
           {() => <Profile selected={selected} setSelected={setSelected}/>}

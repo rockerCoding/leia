@@ -2,9 +2,9 @@ import { View, Text, Pressable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign, MaterialCommunityIcons  } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 
-const BACKGROUND_THEME_COLOR = "#35528C"
+const BACKGROUND_THEME_COLOR = "rgba(107, 158, 128, 1)"
 
 const HeaderAutor = (props) => {
 
@@ -17,9 +17,9 @@ const HeaderAutor = (props) => {
     else setIsSelected(false)
   }, [props])
 
-  const handleNewBook = () => {
+  const handleNewAuthor = () => {
     props.setSelected(null)
-    props.navigation.navigate("Novo Livro")
+    props.navigation.navigate("Novo Autor")
   }
 
   const handleRefresh = () => {
@@ -29,7 +29,7 @@ const HeaderAutor = (props) => {
   const rightIconProfile = (selected, name) => {
 
     switch (name) {
-      case "Livros":
+      case "Autores":
         return (
           <>
             {
@@ -38,8 +38,9 @@ const HeaderAutor = (props) => {
                 <Ionicons name="md-refresh-sharp" size={20} color="white" />
               </TouchableOpacity>
             }
-            <TouchableOpacity onPress={() => handleNewBook()} style={{ position: 'relative' }} >
-              <MaterialCommunityIcons name="book-plus-outline" size={20} color="white" />
+            <TouchableOpacity onPress={() => handleNewAuthor()} style={{ position: 'relative' }} >
+              <FontAwesome5 name="book-reader" size={20} color="white" />
+              <Text style={{ fontSize: 20, position: 'absolute', fontWeight: '700', right: -10, bottom: -10, color: 'white' }}>+</Text>
             </TouchableOpacity>
           </>
         )

@@ -12,6 +12,7 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import CustomDrawer from './CustomDrawer'
 import Dashboard from '../Screens/Dashboard';
 import Emprestimos from '../Screens/Emprestimos';
+import Leitores from '../Screens/Leitores';
 
 const Drawer = createDrawerNavigator();
 
@@ -73,7 +74,7 @@ const AppStack = () => {
 
       <Drawer.Navigator useLegacyImplementation
         drawerContent={(props) => <CustomDrawer {...props} />}
-        initialRouteName='Autores'
+        initialRouteName='Leitores'
         screenOptions={{
           drawerStyle: {
             width: Dimensions.get('screen').width * 0.8
@@ -93,6 +94,7 @@ const AppStack = () => {
       >
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Livros" component={Livros} />
+        <Drawer.Screen name="Leitores" component={Leitores} />
         <Drawer.Screen name="Autores" component={Autores} />
         <Drawer.Screen name="Emprestimos" component={Emprestimos} />
       </Drawer.Navigator>

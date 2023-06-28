@@ -6,6 +6,14 @@ export default class EmprestimoController {
 
   static baseUrl = "http://localhost:3000/emprestimo"
 
+  static getBuscarPorId = async (id) => {
+    return await axios.get(this.baseUrl + "/" + id).then((res) => {
+      return res.data
+    }).catch(erro => {
+      return erro.response.data
+    })
+  }
+
   static getBuscarTodos = async () => {
     return await axios.get(this.baseUrl + "/obterTodos").then((res) => {
       return res.data
@@ -24,25 +32,15 @@ export default class EmprestimoController {
     return res
   }
 
-  /* static novoAutor = async (livro) => {
+  static cancelarEmprestimo = async (emprestimo) => {
     let res;
-    try {
-      res = await axios.post(this.baseUrl + "/cadastrar", livro).then((res) => {
-        return true
-      })
-    } catch (error) {
-      return false
-    }
-    return res
-  }
-
-  static deletarAutor = async (autor) => {
-    return await axios.delete(this.baseUrl + "/deletar", {data: autor}).then((res) => {
-      return true
-    }).catch(erro => {
+    res = await axios.put(this.baseUrl + "/cancelar", emprestimo).then((res) => {
+      return res.status == 200 ? true : false
+    }).catch(error => {
       return false
     })
-  } */
+    return res
+  }
 
 
 }
